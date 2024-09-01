@@ -35,7 +35,7 @@ The refined LDM achieved:
 - **For training the model use the below script** 
 
 ```shell
-python3 audioldm_train/train/latent_diffusion.py -c audioldm_train/config/2023_08_23_reproduce_audioldm/audioldm_custom.yaml
+python3 latent_diffusion.py -c audioldm_custom.yaml
 ```
 
 
