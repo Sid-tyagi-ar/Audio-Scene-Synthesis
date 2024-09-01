@@ -1,8 +1,8 @@
-# Refined Latent Diffusion Model (LDM) for Audio Synthesis
+# Refined Audio-LDM for Audio Synthesis
 
 ## Overview
 
-This project explores a refined Latent Diffusion Model (LDM) approach for audio synthesis, focusing on generating high-quality audio representations through improved techniques in latent space. The refined model incorporates advanced components like HT-SAT and GPT-2 for text encoding, aiming to improve scene classification and overall semantic representation of audio spectrograms.
+This project explores a refined Audio-LDM approach for audio synthesis, focusing on generating high-quality audio representations through improved techniques in latent space. The refined model incorporates advanced components like HT-SAT and GPT-2 for text encoding, aiming to improve scene classification and overall semantic representation of audio spectrograms.
 
 ## Motivation
 
@@ -38,7 +38,8 @@ The refined LDM utilizes:
 The refined LDM achieved:
 - **Reduced Training Time:** The refined LDM achieved lower loss in fewer iterations (50k vs. 500k).
 - **Improved Audio Quality:** Better semantic representations were generated for the audio spectrograms, leading to higher quality audio synthesis.
-- 
+ ![Loss Function Graph](https://github.com/Sid-tyagi-ar/Audio-Scene-Synthesis/blob/main/Training%20Loss%20Graph.png)
+
 
 ## Usage 
 - **For training the model use the below script** 
