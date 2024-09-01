@@ -43,6 +43,8 @@ python3 latent_diffusion.py -c audioldm_custom.yaml
 ```shell
 python3 infer.py --config_yaml audioldm_custom.yaml --list_inference inference_test.lst --reload_from_ckpt checkpoint.ckpt
 ```
+- The checkpoint file can be found here -> [Drive Link](https://drive.google.com/file/d/1-zWIR3CiNpr75yrP4cByd2KD7lfWSUU5/view?usp=drive_link)
+
 
 PS: While running inference on CUDA, there is some driver error for the time being which we are trying to fix ASAP. So for the time being inference can taken out from the validation step of the training. To take out custom audios, once can change the textual description in the data folder.
 
