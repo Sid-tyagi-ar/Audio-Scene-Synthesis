@@ -3,6 +3,7 @@
 ## Overview
 
 This project explores a refined Audio-LDM approach for audio synthesis, focusing on generating high-quality audio representations through improved techniques in latent space. The refined model incorporates advanced components like HT-SAT and GPT-2 for text encoding, aiming to improve scene classification and overall semantic representation of audio spectrograms.
+The drive link which encompasses our entire project details :- [drive_link](https://drive.google.com/drive/u/2/folders/1Qni5M2-nzsVK1boZuPVowiq97E1qQ4mW)
 
 ## Motivation
 
