@@ -31,6 +31,9 @@ The refined LDM achieved:
 - **Improved Audio Quality:** Better semantic representations were generated for the audio spectrograms, leading to higher quality audio synthesis.
  ![Loss Function Graph](https://github.com/Sid-tyagi-ar/Audio-Scene-Synthesis/blob/main/Training%20Loss%20Graph.png)
 
+## Audio Samples
+Here are some of the Samples Generated using our model: [Samples](https://drive.google.com/drive/folders/1aVqhOB6fJRE1neTBj3mI0BYo2O7TTA-t)
+
 
 ## Usage 
 - **For training the model use the below script** 
@@ -48,4 +51,5 @@ python3 infer.py --config_yaml audioldm_custom.yaml --list_inference inference_t
 
 
 PS: While running inference on CUDA, there is some driver error for the time being which we are trying to fix ASAP. So for the time being inference can taken out from the validation step of the training. To take out custom audios, once can change the textual description in the data folder.
+
 
