@@ -1,0 +1,154 @@
+{
+    "data": [
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part9/Y7fmOlUlwoNg.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y7fmOlUlwoNg.npy",
+            "labels": "/m/09x0r,/m/0llzx,/t/dd00127",
+            "caption": "Constant rattling noise and sharp vibrations"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part7/Y6BJ455B1aAs.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y6BJ455B1aAs.npy",
+            "labels": "/m/014zdl,/m/07qsvvw",
+            "caption": "A rocket flies by followed by a loud explosion and fire crackling as a truck engine runs idle"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part15/YGOD8Bt5LfDE.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YGOD8Bt5LfDE.npy",
+            "labels": "/m/07jdr,/m/09x0r,/m/0ytgt",
+            "caption": "Humming and vibrating with a man and children speaking and laughing"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part26/YYQSuFyFm3Lc.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YYQSuFyFm3Lc.npy",
+            "labels": "/m/01g50p,/m/0284vy3,/m/06d_3,/m/07jdr",
+            "caption": "A train running on a railroad track followed by a vehicle door closing and a man talking in the distance while a train horn honks and railroad crossing warning signals ring"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part24/YVjSEIRnLAh8.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YVjSEIRnLAh8.npy",
+            "labels": "/m/09x0r,/m/0dxrf",
+            "caption": "Food is frying, and a woman talks"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part13/YDlWd7Wmdi1E.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YDlWd7Wmdi1E.npy",
+            "labels": "/m/015p6,/m/07rc7d9,/m/09x0r,/m/0jbk",
+            "caption": "A man speaks as birds chirp and dogs bark"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part26/YYNDKuNINDOY.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YYNDKuNINDOY.npy",
+            "labels": "/m/012ndj,/m/03j1ly,/m/03kmc9",
+            "caption": "A large truck driving by as an emergency siren wails and truck horn honks"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part30/YfsBR7e_X_0Y.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YfsBR7e_X_0Y.npy",
+            "labels": "/m/09x0r,/m/0ytgt,/t/dd00125",
+            "caption": "A child yelling as a young boy talks during several slaps on a hard surface"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part37/YtjCNwdOUiGc.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YtjCNwdOUiGc.npy",
+            "labels": "/m/07qv_d5,/m/07yv9,/m/0912c9",
+            "caption": "An engine rumbles loudly, then an air horn honk three times"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part40/YyL3gKa6YLoM.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YyL3gKa6YLoM.npy",
+            "labels": "/m/01d3sd,/m/09x0r",
+            "caption": "A person snoring with another man speaking"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part18/YLbken4JCr94.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YLbken4JCr94.npy",
+            "labels": "/m/06mb1,/m/0jb2l,/m/0ngt1",
+            "caption": "Thunder and a gentle rain"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part27/Y_xylo5_IiaM.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y_xylo5_IiaM.npy",
+            "labels": "/m/09x0r,/m/0ytgt,/t/dd00125",
+            "caption": "A woman talks and a baby whispers"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part37/YsVYTOURVsQ0.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YsVYTOURVsQ0.npy",
+            "labels": "/m/07pqc89,/m/09x0r",
+            "caption": "A man talking as a stream of water trickles in the background"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part23/YSmdj6JFB9MQ.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YSmdj6JFB9MQ.npy",
+            "labels": "/m/01jt3m,/m/09x0r",
+            "caption": "A person briefly talks followed quickly by toilet flushing and another voice from another person"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part38/Yu84FiZ_omhA.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Yu84FiZ_omhA.npy",
+            "labels": "/m/015p6,/m/07pggtn,/m/0jbk",
+            "caption": "A woman singing then choking followed by birds chirping"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part33/Ykx6Rj4MDIAw.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Ykx6Rj4MDIAw.npy",
+            "labels": "/m/07rjwbb",
+            "caption": "Machinery banging and hissing"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part21/YPLHXGDnig4M.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YPLHXGDnig4M.npy",
+            "labels": "/m/01yrx,/m/07qrkrw",
+            "caption": "A person talking which later imitates a couple of meow sounds"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part26/YZ0IrCa4MvOA.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YZ0IrCa4MvOA.npy",
+            "labels": "/m/0130jx,/m/02jz0l,/m/07pqc89,/m/0838f",
+            "caption": "Rain is falling continuously"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part2/Y14ekd4nkpwc.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y14ekd4nkpwc.npy",
+            "labels": "/t/dd00002",
+            "caption": "An infant crying followed by a man laughing"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part40/YyfYNPWs7mWY.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YyfYNPWs7mWY.npy",
+            "labels": "/m/02dgv,/m/05zppz,/m/09x0r",
+            "caption": "A man talking as a door slams shut followed by a door creaking"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part38/YuhSDBwVrEdo.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YuhSDBwVrEdo.npy",
+            "labels": "/m/01w250",
+            "caption": "Whistling with wind blowing"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part26/YYQGW5AwDOIo.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YYQGW5AwDOIo.npy",
+            "labels": "/m/07yv9,/m/0k4j,/m/0ltv",
+            "caption": "Vehicles passing by slowly together with distant murmuring"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part19/YMe4npKmtchA.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YMe4npKmtchA.npy",
+            "labels": "/m/07pqc89,/m/0838f,/m/09x0r",
+            "caption": "Water is trickling, and a man talks"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part31/YgbtcDoh0q3c.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YgbtcDoh0q3c.npy",
+            "labels": "/m/01j3sz,/m/07s04w4,/m/09x0r",
+            "caption": "Scraping and speech followed by people laughing"
+        },
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part10/Y9HVgYs8OOLc.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y9HVgYs8OOLc.npy",
+            "labels": "/m/015p6,/m/09x0r,/m/0h0rv,/t/dd00125",
+            "caption": "Birds cackling and young peoples voices"
+        }
+    ]
+}

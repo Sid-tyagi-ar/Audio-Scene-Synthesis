@@ -1,0 +1,10 @@
+{
+    "data": [
+        {
+            "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part9/Y7fmOlUlwoNg.wav",
+            "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y7fmOlUlwoNg.npy",
+            "labels": "/m/09x0r,/m/0llzx,/t/dd00127",
+            "caption": "Constant rattling noise and sharp vibrations"
+        }
+    ]
+}

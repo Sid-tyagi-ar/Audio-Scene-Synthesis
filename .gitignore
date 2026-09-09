@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.so
+.DS_Store
+.ipynb_checkpoints/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Large assets fetched by scripts/setup_data.sh -- never commit these
+data/checkpoints/*
+!data/checkpoints/.gitkeep
+data/dataset/audioset/
+audioldm_train/modules/MSCLAP/msclap/models/encoder_model.pth
+*.ckpt
+*.pt
+*.pth
+*.tar
+*.tar.gz
+*.zip
+*.wav
+
+# Training / inference output
+log/
+lightning_logs/
+wandb/
+taming/
+error_*
+output_*
+
+# Editors
+.idea/
+.vscode/
