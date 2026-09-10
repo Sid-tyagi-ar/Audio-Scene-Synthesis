@@ -54,10 +54,10 @@ argparse accepts only substrings of `"abstract"`. Widen it to a list to use them
 
 ## Capacity presets
 
-The Drive archive held four copies of `main.py` that differed *only* in the
-`pixelsnail` subcommand's argparse defaults. The largest, latest one is kept
-here as `main.py`; the earlier presets are recorded below so they can be
-reproduced with command-line flags rather than duplicate files.
+`main.py` ships the largest, latest set of `pixelsnail` argparse defaults.
+Three earlier capacity presets were used during the project; they differed
+*only* in those defaults, so rather than carry near-duplicate files they are
+recorded below and can be reproduced with command-line flags.
 
 | Preset | `n_channels` | `n_res_layers` | `attn_n_layers` | `attn_nh` | `attn_dv` | `attn_drop_rate` |
 |---|---|---|---|---|---|---|

@@ -38,7 +38,10 @@ The full Weights & Biases training report is included at [docs/wandb-training-re
 
 ## Audio Samples
 
-Some samples generated using our model: [Samples](https://drive.google.com/drive/folders/1aVqhOB6fJRE1neTBj3mI0BYo2O7TTA-t)
+Ten generated clips are on the Hugging Face Hub under
+[`samples/`](https://huggingface.co/Sukhvansh/audio-scene-synthesis/tree/main/samples) —
+16 kHz mono, 10.24 s each, with `samples/index.csv` giving the prompt behind each
+one. Enough to hear what the model does without downloading a checkpoint.
 
 ---
 
@@ -107,10 +110,9 @@ present is skipped, and interrupted downloads resume, so it is safe to re-run.
 | `--dataset` | Preprocessed AudioCaps audio (a subset of AudioSet `unbalanced_train_segments`) | 32 GB | `dataset.tar` from the same upstream repo |
 | `--trained-ckpt` | **Our refined model**, 70k steps | 5.5 GB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
 | `--baseline-ckpt` | Our AudioLDM baseline, 500k steps | 4.6 GB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
-| `--clap-htsat-tiny` | LAION CLAP HTSAT-tiny weights, needed only by `audioldm_original.yaml` | 1.7 GB | [LAION-AI/CLAP](https://github.com/LAION-AI/CLAP) |
+| `--clap-htsat-tiny` | LAION CLAP HTSAT-tiny weights, needed only by `audioldm_original.yaml` | 1.7 GB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) (mirror of [LAION-AI/CLAP](https://github.com/LAION-AI/CLAP)) |
 | `--clap-autoencoder` | CLAP text-embedding autoencoder weights, needed only by `custom_audioldm.yaml` | 256 MB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
 | `--finetune-ckpts` | Official `audioldm-m-full` / `audioldm-s-full` | ~4 GB | [Zenodo record 7884686](https://zenodo.org/records/7884686) |
-| `--checkpoints-alt` | Same as `--checkpoints`, downloaded file by file instead of as one tarball | 7.4 GB | mirror on this project's Drive |
 
 Our own trained checkpoints live on the Hugging Face Hub at
 [**Sukhvansh/audio-scene-synthesis**](https://huggingface.co/Sukhvansh/audio-scene-synthesis).
@@ -179,8 +181,8 @@ python3 audioldm_train/infer.py \
   --reload_from_ckpt "log/latent_diffusion/2023_08_23_reproduce_audioldm/audioldm_custom/checkpoints/checkpoint-fad-133.00-global_step=69999.ckpt"
 ```
 
-That checkpoint path is where `./scripts/setup_data.sh --trained-ckpt` puts our
-model; it is also downloadable directly [here](https://drive.google.com/file/d/1-zWIR3CiNpr75yrP4cByd2KD7lfWSUU5/view?usp=drive_link).
+That checkpoint path is where `./scripts/setup_data.sh --trained-ckpt` puts the
+model.
 Generated audio is written next to the checkpoint's log folder and named after
 the caption. `tests/captionlist/inference_test_with_filename.lst` shows the
 format for choosing output filenames yourself, and
@@ -254,12 +256,6 @@ with their own setup instructions in [experiments/README.md](experiments/README.
 ./scripts/setup_data.sh --experiments   # data + weights for the above, ~4.2 GB
 ```
 
-## Project archive
-
-The original working directory for this project, including training logs, W&B
-runs and generated audio, lives in Google Drive:
-[CS671-DL](https://drive.google.com/drive/folders/1Qni5M2-nzsVK1boZuPVowiq97E1qQ4mW).
-Everything needed to reproduce the work has been extracted into this repository.
 
 ## Licensing and attribution
 

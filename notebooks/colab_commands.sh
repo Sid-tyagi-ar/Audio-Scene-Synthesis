@@ -1,4 +1,5 @@
-cd /content/drive/MyDrive/CS671-DL/AudioLDM/
+# Setup used to train this project on Google Colab.
+# Clone the repository first, then run these from its root.
 pip install poetry
 poetry install
 source ~/.cache/pypoetry/virtualenvs/audioldm-train-eOy3ZhPZ-py3.10/bin/activate

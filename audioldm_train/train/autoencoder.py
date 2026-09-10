@@ -2,11 +2,14 @@
 # Email: haoheliu@gmail.com
 # Date: 11 Feb 2023
 
+import os
 import sys
 
+# Make `audioldm_train` importable when run as a script rather than via the
+# installed package.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append("src")
 
-import os
 import wandb
 
 import argparse

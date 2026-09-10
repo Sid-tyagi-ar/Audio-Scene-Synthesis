@@ -3,10 +3,10 @@
 # setup_data.sh -- fetch the large assets that are not tracked in git and lay
 # them out in the directory structure the training/inference code expects.
 #
-# Everything downloaded here comes from the upstream projects this work builds
-# on (AudioLDM-training-finetuning, AudioCaps/AudioSet, Zenodo), or, for the
-# checkpoints we trained ourselves, from our Hugging Face model repo:
+# Sources: the upstream projects this work builds on (AudioLDM-training-finetuning,
+# AudioCaps/AudioSet, DCASE/Zenodo) and this project's Hugging Face model repo,
 #   https://huggingface.co/Sukhvansh/audio-scene-synthesis
+# which holds the checkpoints trained for this project.
 #
 # Usage:
 #   scripts/setup_data.sh --checkpoints        # pretrained VAE/HiFi-GAN/CLAP/AudioMAE (~7.8 GB)
@@ -16,7 +16,6 @@
 #   scripts/setup_data.sh --clap-htsat-tiny    # LAION CLAP HTSAT-tiny weights      (~1.7 GB)
 #   scripts/setup_data.sh --clap-autoencoder   # CLAP embedding autoencoder weights (~256 MB)
 #   scripts/setup_data.sh --finetune-ckpts     # official audioldm-{s,m}-full       (~4 GB)
-#   scripts/setup_data.sh --checkpoints-alt    # same as --checkpoints, file by file
 #   scripts/setup_data.sh --minimal            # checkpoints + trained-ckpt (inference only)
 #   scripts/setup_data.sh --all                # everything for the main model
 #   scripts/setup_data.sh --verify             # check the layout without downloading
@@ -47,51 +46,33 @@ LOG_DIR="log/latent_diffusion/2023_08_23_reproduce_audioldm"
 # Original source: https://github.com/haoheliu/AudioLDM-training-finetuning
 CHECKPOINTS_TAR_ID="1T6EnuAHIc8ioeZ9kB1OZ_WGgwXAVGOZS"   # checkpoints.tar, 7.8 GB
 
-# The same checkpoints as individual files, mirrored on this project's Drive.
-# Used by --checkpoints-alt as a fallback if the upstream tarball is unavailable,
-# and by --clap-htsat-tiny, which the tarball does not ship.
-CKPT_FILES=(
-  "vae_mel_16k_64bins.ckpt:1Um8ECAMkeicsZbaOr37YDfzau1SYxWgl"
-  "hifigan_16k_64bins.ckpt:1cyeIag5nnX-vp_2yDvFJ9mUu9MRtPNjT"
-  "hifigan_16k_64bins.json:1CcvPX7oWHwqL2nO9p-NLAVq-oKvvbST8"
-  "hifigan_48k_256bins.ckpt:1Z-N4ktpUhAcKleh66XIPixiSJc068HwN"
-  "hifigan_48k_256bins.json:144iea-zrj2xgBwccJe-j_eS_kKXTtBBH"
-  "audiomae_16k_128bins.ckpt:1y3Fx6eIjbLtnP38d9l3PyQ8qtoYybSDi"
-  "clap_music_speech_audioset_epoch_15_esc_89.98.pt:1kEbOQFIfln8f10BsEAx3AUHLtUXf8bPR"
-)
-
 # LAION CLAP HTSAT-tiny weights, required only by audioldm_original.yaml (the
-# AudioLDM baseline config). Upstream project: https://github.com/LAION-AI/CLAP
-CLAP_HTSAT_TINY_ID="1OKVfQQlKYX1yOD0T9EHXDZo2OIoOTfvh"    # clap_htsat_tiny.pt, 1.7 GB
+# AudioLDM baseline config). Upstream project: https://github.com/LAION-AI/CLAP.
+# Upstream's checkpoints.tar does not ship this file, so it is mirrored in this
+# project's Hub repo -- third-party, redistributed only for reproducibility.
+CLAP_HTSAT_TINY_HF="third-party/clap_htsat_tiny.pt"      # 1.7 GB
 
 # Preprocessed AudioCaps audio (a subset of AudioSet unbalanced_train_segments,
 # resampled and segmented). Original source: same upstream repo. The caption
 # metadata itself is tracked in git under data/dataset/metadata/.
 DATASET_TAR_ID="16J1CVu7EZPD_22FxitZ0TpOd__FwzOmx"       # dataset.tar, 32 GB
 
-# --- Our own trained checkpoints, hosted on the Hugging Face Hub -----------
+# --- Checkpoints trained for this project, on the Hugging Face Hub ---------
 #
 # https://huggingface.co/Sukhvansh/audio-scene-synthesis
-#
-# Google Drive file ids are kept in comments as a fallback; Drive serves a
-# virus-scan interstitial for files this size and rate-limits repeat access,
-# which is why the Hub is the primary source.
 HF_REPO="Sukhvansh/audio-scene-synthesis"
 
 TRAINED_CKPT_NAME="checkpoint-fad-133.00-global_step=69999.ckpt"
 TRAINED_CKPT_HF="audioldm/$TRAINED_CKPT_NAME"            # refined model, 70k steps
-# Drive fallback: 1-zWIR3CiNpr75yrP4cByd2KD7lfWSUU5
 
 BASELINE_CKPT_NAME="checkpoint-fad-133.00-global_step=499999.ckpt"
 BASELINE_CKPT_HF="audioldm/$BASELINE_CKPT_NAME"          # AudioLDM baseline, 500k steps
-# Drive fallback: 1VgOPpvNBhBqKi210HrQ2c1GtIkMYCHGN
 
 # Weights for the CLAP text-embedding autoencoder experiment. Loaded by
 # audioldm_train/modules/MSCLAP/msclap/models/clap2.py, which is used by
 # custom_audioldm.yaml only -- audioldm_custom.yaml (our final model) uses clap3.
 CLAP_AUTOENCODER_HF="clap-autoencoder/encoder_model.pth" # 256 MB
 CLAP_AUTOENCODER_PATH="audioldm_train/modules/MSCLAP/msclap/models/encoder_model.pth"
-# Drive fallback: 115dIHOuW0X_e-nngNiESEopMIU_Au5pn
 
 # Official AudioLDM checkpoints for finetuning, from Zenodo record 7884686.
 FINETUNE_URLS=(
@@ -114,7 +95,7 @@ DCASE_ZENODO_RECORD="8091972"
 # The HiFi-GAN vocoder for the DCASE baseline ships in the upstream repo itself.
 DCASE_HIFIGAN_BASE="https://raw.githubusercontent.com/DCASE2023-Task7-Foley-Sound-Synthesis/dcase2023_task7_baseline/main/checkpoint/hifigan"
 
-# Checkpoints we trained for the DCASE experiments, on the Hugging Face Hub.
+# Checkpoints trained for the DCASE experiments, on the Hugging Face Hub.
 # Each entry is "<local path under experiments/dcase2023_task7>|<path in HF_REPO>".
 # The cVAE local filename keeps the spaces that cVAE_improved.py expects; the
 # copy on the Hub uses underscores so the URL stays clean.
@@ -127,7 +108,6 @@ DCASE_CKPTS=(
 # Standalone PixelSNAIL run on mel-spectrogram images, final epoch.
 PIXELSNAIL_CKPT_NAME="results/pixelsnail/64-40-epochs/checkpoint_41_model2.pt"
 PIXELSNAIL_CKPT_HF="pixelsnail-melspec/checkpoint_41_model2.pt"   # 17 MB
-# Drive fallback: 1udK8hNemircljzRFKd3qjzq_8Ycdy8XD
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -177,7 +157,8 @@ hf_download() {
 # Download a public Google Drive file to $2, handling the interstitial
 # "virus scan" confirmation page that Drive serves for large files.
 # Prefers gdown; falls back to curl if gdown is unavailable or fails.
-# Still used for the third-party checkpoint mirror (--checkpoints-alt).
+# Used only for checkpoints.tar and dataset.tar, which the AudioLDM authors
+# publish on Google Drive.
 gdrive_download() {
   local file_id="$1" out="$2"
   mkdir -p "$(dirname "$out")"
@@ -245,20 +226,6 @@ install_checkpoints() {
   log "pretrained checkpoints installed"
 }
 
-install_checkpoints_alt() {
-  log "downloading pretrained checkpoints file by file (~7.4 GB)"
-  mkdir -p "$CKPT_DIR"
-  local entry name id
-  for entry in "${CKPT_FILES[@]}"; do
-    name="${entry%%:*}"; id="${entry##*:}"
-    if [ -s "$CKPT_DIR/$name" ]; then
-      log "$name already present, skipping"
-      continue
-    fi
-    gdrive_download "$id" "$CKPT_DIR/$name"
-  done
-  log "pretrained checkpoints installed"
-}
 
 install_clap_htsat_tiny() {
   if [ -s "$CKPT_DIR/clap_htsat_tiny.pt" ]; then
@@ -266,7 +233,7 @@ install_clap_htsat_tiny() {
     return
   fi
   log "downloading LAION CLAP HTSAT-tiny weights (~1.7 GB)"
-  gdrive_download "$CLAP_HTSAT_TINY_ID" "$CKPT_DIR/clap_htsat_tiny.pt"
+  hf_download "$CLAP_HTSAT_TINY_HF" "$CKPT_DIR/clap_htsat_tiny.pt"
 }
 
 install_dataset() {
@@ -489,14 +456,13 @@ usage() {
 
 [ $# -gt 0 ] || usage 1
 
-do_checkpoints=0 do_checkpoints_alt=0 do_dataset=0 do_trained=0 do_baseline=0
+do_checkpoints=0 do_dataset=0 do_trained=0 do_baseline=0
 do_clap_tiny=0 do_clap_ae=0 do_finetune=0 do_verify=0
 do_dcase_data=0 do_dcase_ckpt=0 do_ps_ckpt=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --checkpoints)       do_checkpoints=1 ;;
-    --checkpoints-alt)   do_checkpoints_alt=1 ;;
     --dataset)           do_dataset=1 ;;
     --trained-ckpt)      do_trained=1 ;;
     --baseline-ckpt)     do_baseline=1 ;;
@@ -518,7 +484,6 @@ while [ $# -gt 0 ]; do
 done
 
 [ "$do_checkpoints"     = 1 ] && install_checkpoints
-[ "$do_checkpoints_alt" = 1 ] && install_checkpoints_alt
 [ "$do_dataset"         = 1 ] && install_dataset
 [ "$do_trained"         = 1 ] && install_trained_ckpt
 [ "$do_baseline"        = 1 ] && install_baseline_ckpt

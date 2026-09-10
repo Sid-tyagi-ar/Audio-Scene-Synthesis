@@ -1,9 +1,6 @@
 import sys
 
-sys.path.append("/mnt/g/My Drive/CS671-DL/AudioLDM")
-sys.path.append("/content/drive/MyDrive/CS671-DL/AudioLDM/")
 sys.path.append("src")
-# sys.path.append(r"D:\PYTHON Programming\Sound Scene Gen\AudioLDM-training-finetuning-main\AudioLDM-training-finetuning-main")
 
 import os
 import pandas as pd
