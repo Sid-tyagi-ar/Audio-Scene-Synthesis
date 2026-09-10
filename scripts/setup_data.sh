@@ -4,8 +4,9 @@
 # them out in the directory structure the training/inference code expects.
 #
 # Everything downloaded here comes from the upstream projects this work builds
-# on (AudioLDM-training-finetuning, AudioCaps/AudioSet, Zenodo) or from the
-# project's own Google Drive for the checkpoints we trained ourselves.
+# on (AudioLDM-training-finetuning, AudioCaps/AudioSet, Zenodo), or, for the
+# checkpoints we trained ourselves, from our Hugging Face model repo:
+#   https://huggingface.co/Sukhvansh/audio-scene-synthesis
 #
 # Usage:
 #   scripts/setup_data.sh --checkpoints        # pretrained VAE/HiFi-GAN/CLAP/AudioMAE (~7.8 GB)
@@ -68,17 +69,29 @@ CLAP_HTSAT_TINY_ID="1OKVfQQlKYX1yOD0T9EHXDZo2OIoOTfvh"    # clap_htsat_tiny.pt, 
 # metadata itself is tracked in git under data/dataset/metadata/.
 DATASET_TAR_ID="16J1CVu7EZPD_22FxitZ0TpOd__FwzOmx"       # dataset.tar, 32 GB
 
-# Checkpoints we trained for this project.
-TRAINED_CKPT_ID="1-zWIR3CiNpr75yrP4cByd2KD7lfWSUU5"      # refined model,  70k steps
+# --- Our own trained checkpoints, hosted on the Hugging Face Hub -----------
+#
+# https://huggingface.co/Sukhvansh/audio-scene-synthesis
+#
+# Google Drive file ids are kept in comments as a fallback; Drive serves a
+# virus-scan interstitial for files this size and rate-limits repeat access,
+# which is why the Hub is the primary source.
+HF_REPO="Sukhvansh/audio-scene-synthesis"
+
 TRAINED_CKPT_NAME="checkpoint-fad-133.00-global_step=69999.ckpt"
-BASELINE_CKPT_ID="1VgOPpvNBhBqKi210HrQ2c1GtIkMYCHGN"     # AudioLDM baseline, 500k steps
+TRAINED_CKPT_HF="audioldm/$TRAINED_CKPT_NAME"            # refined model, 70k steps
+# Drive fallback: 1-zWIR3CiNpr75yrP4cByd2KD7lfWSUU5
+
 BASELINE_CKPT_NAME="checkpoint-fad-133.00-global_step=499999.ckpt"
+BASELINE_CKPT_HF="audioldm/$BASELINE_CKPT_NAME"          # AudioLDM baseline, 500k steps
+# Drive fallback: 1VgOPpvNBhBqKi210HrQ2c1GtIkMYCHGN
 
 # Weights for the CLAP text-embedding autoencoder experiment. Loaded by
 # audioldm_train/modules/MSCLAP/msclap/models/clap2.py, which is used by
 # custom_audioldm.yaml only -- audioldm_custom.yaml (our final model) uses clap3.
-CLAP_AUTOENCODER_ID="115dIHOuW0X_e-nngNiESEopMIU_Au5pn"  # encoder_model.pth, 256 MB
+CLAP_AUTOENCODER_HF="clap-autoencoder/encoder_model.pth" # 256 MB
 CLAP_AUTOENCODER_PATH="audioldm_train/modules/MSCLAP/msclap/models/encoder_model.pth"
+# Drive fallback: 115dIHOuW0X_e-nngNiESEopMIU_Au5pn
 
 # Official AudioLDM checkpoints for finetuning, from Zenodo record 7884686.
 FINETUNE_URLS=(
@@ -101,16 +114,20 @@ DCASE_ZENODO_RECORD="8091972"
 # The HiFi-GAN vocoder for the DCASE baseline ships in the upstream repo itself.
 DCASE_HIFIGAN_BASE="https://raw.githubusercontent.com/DCASE2023-Task7-Foley-Sound-Synthesis/dcase2023_task7_baseline/main/checkpoint/hifigan"
 
-# Checkpoints we trained for the DCASE experiments, on this project's Drive.
+# Checkpoints we trained for the DCASE experiments, on the Hugging Face Hub.
+# Each entry is "<local path under experiments/dcase2023_task7>|<path in HF_REPO>".
+# The cVAE local filename keeps the spaces that cVAE_improved.py expects; the
+# copy on the Hub uses underscores so the URL stays clean.
 DCASE_CKPTS=(
-  "checkpoint/cvae_improved/checkpoint_cvae_improved_no fl 500_6000.pt:1-SZQ6qoYz_vicsweEtiIHgETE2GKb5AX"
-  "checkpoint/pixelsnail-final/bottom_050.pt:1qZOn1gDcozOQrCqJRLkxTsSQEZxCxg2K"
-  "vqvae_046.pt:1CVUwBZdLSv-223oS6-fsmDFtFAhnlQkS"
+  "checkpoint/cvae_improved/checkpoint_cvae_improved_no fl 500_6000.pt|dcase2023-task7/checkpoint_cvae_improved_no_fl_500_6000.pt"
+  "checkpoint/pixelsnail-final/bottom_050.pt|dcase2023-task7/pixelsnail_bottom_050.pt"
+  "vqvae_046.pt|dcase2023-task7/vqvae_046.pt"
 )
 
 # Standalone PixelSNAIL run on mel-spectrogram images, final epoch.
-PIXELSNAIL_CKPT_ID="1udK8hNemircljzRFKd3qjzq_8Ycdy8XD"   # checkpoint_41_model2.pt, 16 MB
 PIXELSNAIL_CKPT_NAME="results/pixelsnail/64-40-epochs/checkpoint_41_model2.pt"
+PIXELSNAIL_CKPT_HF="pixelsnail-melspec/checkpoint_41_model2.pt"   # 17 MB
+# Drive fallback: 1udK8hNemircljzRFKd3qjzq_8Ycdy8XD
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -124,9 +141,43 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "'$1' is required but not installed. $2"
 }
 
+# Download a file from our Hugging Face model repo to $2.
+# $1 is the path within the repo, e.g. "audioldm/checkpoint-....ckpt".
+# Uses the `hf` CLI when present (resumable, cached); otherwise plain curl
+# against the public resolve endpoint, which needs no authentication.
+hf_download() {
+  local repo_path="$1" out="$2"
+  mkdir -p "$(dirname "$out")"
+
+  if command -v hf >/dev/null 2>&1; then
+    log "hf download $HF_REPO $repo_path"
+    local tmpdir
+    tmpdir="$(mktemp -d)"
+    if hf download "$HF_REPO" "$repo_path" --local-dir "$tmpdir" >/dev/null 2>&1 \
+       && [ -s "$tmpdir/$repo_path" ]; then
+      mv "$tmpdir/$repo_path" "$out"
+      rm -rf "$tmpdir"
+      return 0
+    fi
+    rm -rf "$tmpdir"
+    warn "hf CLI download failed for $repo_path; falling back to curl"
+  fi
+
+  need_cmd curl "Install curl, or the Hugging Face CLI (pip install huggingface_hub)."
+  # Percent-encode the path so '=' and spaces survive the URL.
+  local encoded
+  encoded="$(printf '%s' "$repo_path" | sed 's/ /%20/g')"
+  log "curl https://huggingface.co/$HF_REPO/resolve/main/$repo_path"
+  curl -fL --retry 3 --retry-delay 5 -C - \
+    "https://huggingface.co/$HF_REPO/resolve/main/$encoded" -o "$out.part"
+  [ -s "$out.part" ] || die "download produced an empty file for $repo_path"
+  mv "$out.part" "$out"
+}
+
 # Download a public Google Drive file to $2, handling the interstitial
 # "virus scan" confirmation page that Drive serves for large files.
 # Prefers gdown; falls back to curl if gdown is unavailable or fails.
+# Still used for the third-party checkpoint mirror (--checkpoints-alt).
 gdrive_download() {
   local file_id="$1" out="$2"
   mkdir -p "$(dirname "$out")"
@@ -246,7 +297,7 @@ install_trained_ckpt() {
     return
   fi
   log "downloading our refined model checkpoint, 70k steps (~5.5 GB)"
-  gdrive_download "$TRAINED_CKPT_ID" "$dest"
+  hf_download "$TRAINED_CKPT_HF" "$dest"
   log "checkpoint at $dest"
 }
 
@@ -257,7 +308,7 @@ install_baseline_ckpt() {
     return
   fi
   log "downloading our AudioLDM baseline checkpoint, 500k steps (~4.6 GB)"
-  gdrive_download "$BASELINE_CKPT_ID" "$dest"
+  hf_download "$BASELINE_CKPT_HF" "$dest"
   log "checkpoint at $dest"
 }
 
@@ -267,7 +318,7 @@ install_clap_autoencoder() {
     return
   fi
   log "downloading CLAP embedding autoencoder weights (~256 MB)"
-  gdrive_download "$CLAP_AUTOENCODER_ID" "$CLAP_AUTOENCODER_PATH"
+  hf_download "$CLAP_AUTOENCODER_HF" "$CLAP_AUTOENCODER_PATH"
 }
 
 install_finetune_ckpts() {
@@ -352,14 +403,14 @@ install_dcase_checkpoints() {
     fi
   done
 
-  local entry name id
+  local entry name repo_path
   for entry in "${DCASE_CKPTS[@]}"; do
-    name="${entry%:*}"; id="${entry##*:}"
+    name="${entry%|*}"; repo_path="${entry##*|}"
     if [ -s "$DCASE_DIR/$name" ]; then
       log "$(basename "$name") already present, skipping"
       continue
     fi
-    gdrive_download "$id" "$DCASE_DIR/$name"
+    hf_download "$repo_path" "$DCASE_DIR/$name"
   done
   log "DCASE checkpoints installed"
 }
@@ -370,7 +421,7 @@ install_pixelsnail_ckpt() {
     return
   fi
   log "downloading standalone PixelSNAIL checkpoint, epoch 41 (~17 MB)"
-  gdrive_download "$PIXELSNAIL_CKPT_ID" "$PIXELSNAIL_DIR/$PIXELSNAIL_CKPT_NAME"
+  hf_download "$PIXELSNAIL_CKPT_HF" "$PIXELSNAIL_DIR/$PIXELSNAIL_CKPT_NAME"
 }
 
 verify() {

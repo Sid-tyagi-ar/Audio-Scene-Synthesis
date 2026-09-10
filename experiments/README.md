@@ -27,6 +27,11 @@ Both model directories need assets that are not in git:
 ./scripts/setup_data.sh --pixelsnail-ckpt    # standalone PixelSNAIL, epoch 41 (~17 MB)
 ```
 
+The checkpoints we trained come from
+[**Sukhvansh/audio-scene-synthesis**](https://huggingface.co/Sukhvansh/audio-scene-synthesis)
+on the Hugging Face Hub; the DCASE HiFi-GAN vocoder comes from the upstream
+baseline repository, and the dataset from Zenodo.
+
 > **Dataset licence.** The DCASE 2023 Task 7 development set
 > ([Zenodo record 8091972](https://zenodo.org/record/8091972)) mixes UrbanSound8K,
 > FSD50K and BBC Sound Effects material. The BBC portion was provided for the

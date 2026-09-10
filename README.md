@@ -105,12 +105,24 @@ present is skipped, and interrupted downloads resume, so it is safe to re-run.
 |---|---|---|---|
 | `--checkpoints` | Pretrained VAE, AudioMAE, CLAP, 16 kHz + 48 kHz HiFi-GAN | 7.8 GB | `checkpoints.tar` from [AudioLDM-training-finetuning](https://github.com/haoheliu/AudioLDM-training-finetuning#download-checkpoints-and-dataset) |
 | `--dataset` | Preprocessed AudioCaps audio (a subset of AudioSet `unbalanced_train_segments`) | 32 GB | `dataset.tar` from the same upstream repo |
-| `--trained-ckpt` | **Our refined model**, 70k steps | 5.5 GB | this project's Google Drive |
-| `--baseline-ckpt` | Our AudioLDM baseline, 500k steps | 4.6 GB | this project's Google Drive |
+| `--trained-ckpt` | **Our refined model**, 70k steps | 5.5 GB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
+| `--baseline-ckpt` | Our AudioLDM baseline, 500k steps | 4.6 GB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
 | `--clap-htsat-tiny` | LAION CLAP HTSAT-tiny weights, needed only by `audioldm_original.yaml` | 1.7 GB | [LAION-AI/CLAP](https://github.com/LAION-AI/CLAP) |
-| `--clap-autoencoder` | CLAP text-embedding autoencoder weights, needed only by `custom_audioldm.yaml` | 256 MB | this project's Google Drive |
+| `--clap-autoencoder` | CLAP text-embedding autoencoder weights, needed only by `custom_audioldm.yaml` | 256 MB | [🤗 Hub](https://huggingface.co/Sukhvansh/audio-scene-synthesis) |
 | `--finetune-ckpts` | Official `audioldm-m-full` / `audioldm-s-full` | ~4 GB | [Zenodo record 7884686](https://zenodo.org/records/7884686) |
 | `--checkpoints-alt` | Same as `--checkpoints`, downloaded file by file instead of as one tarball | 7.4 GB | mirror on this project's Drive |
+
+Our own trained checkpoints live on the Hugging Face Hub at
+[**Sukhvansh/audio-scene-synthesis**](https://huggingface.co/Sukhvansh/audio-scene-synthesis).
+The script uses the `hf` CLI when available and falls back to plain `curl`
+against the public resolve endpoint, so no Hugging Face account is needed to
+download them. To grab one directly:
+
+```python
+from huggingface_hub import hf_hub_download
+ckpt = hf_hub_download("Sukhvansh/audio-scene-synthesis",
+                       "audioldm/checkpoint-fad-133.00-global_step=69999.ckpt")
+```
 
 MS-CLAP weights (`CLAP_weights_2023.pth`) are not downloaded by the script — the
 model pulls them from the [`microsoft/msclap`](https://huggingface.co/microsoft/msclap)
