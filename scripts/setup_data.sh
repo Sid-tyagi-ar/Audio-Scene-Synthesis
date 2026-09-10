@@ -17,8 +17,14 @@
 #   scripts/setup_data.sh --finetune-ckpts     # official audioldm-{s,m}-full       (~4 GB)
 #   scripts/setup_data.sh --checkpoints-alt    # same as --checkpoints, file by file
 #   scripts/setup_data.sh --minimal            # checkpoints + trained-ckpt (inference only)
-#   scripts/setup_data.sh --all                # everything above
+#   scripts/setup_data.sh --all                # everything for the main model
 #   scripts/setup_data.sh --verify             # check the layout without downloading
+#
+# For the side experiments under experiments/ (see experiments/README.md):
+#   scripts/setup_data.sh --dcase-dataset      # DCASE'23 Task 7 Foley dev set      (~4 GB)
+#   scripts/setup_data.sh --dcase-checkpoints  # cVAE / VQ-VAE / PixelSNAIL / vocoder (~190 MB)
+#   scripts/setup_data.sh --pixelsnail-ckpt    # standalone PixelSNAIL, epoch 41    (~17 MB)
+#   scripts/setup_data.sh --experiments        # all three of the above
 #
 # Flags can be combined. Anything already present is skipped, so the script is
 # safe to re-run after an interrupted download.
@@ -79,6 +85,32 @@ FINETUNE_URLS=(
   "https://zenodo.org/records/7884686/files/audioldm-m-full.ckpt"
   "https://zenodo.org/records/7884686/files/audioldm-s-full"
 )
+
+# --- Side experiments under experiments/ ------------------------------------
+
+DCASE_DIR="experiments/dcase2023_task7"
+PIXELSNAIL_DIR="experiments/pixelsnail"
+
+# DCASE 2023 Challenge Task 7 (Foley Sound Synthesis) development set, ~4 GB.
+# Original source: https://zenodo.org/record/8091972 -- file names are resolved
+# from the Zenodo API at run time so a re-upload does not break this script.
+# NOTE: part of this data is BBC Sound Effects material, provided for the DCASE
+# challenge and research use only. Check DevMeta.csv for per-clip provenance.
+DCASE_ZENODO_RECORD="8091972"
+
+# The HiFi-GAN vocoder for the DCASE baseline ships in the upstream repo itself.
+DCASE_HIFIGAN_BASE="https://raw.githubusercontent.com/DCASE2023-Task7-Foley-Sound-Synthesis/dcase2023_task7_baseline/main/checkpoint/hifigan"
+
+# Checkpoints we trained for the DCASE experiments, on this project's Drive.
+DCASE_CKPTS=(
+  "checkpoint/cvae_improved/checkpoint_cvae_improved_no fl 500_6000.pt:1-SZQ6qoYz_vicsweEtiIHgETE2GKb5AX"
+  "checkpoint/pixelsnail-final/bottom_050.pt:1qZOn1gDcozOQrCqJRLkxTsSQEZxCxg2K"
+  "vqvae_046.pt:1CVUwBZdLSv-223oS6-fsmDFtFAhnlQkS"
+)
+
+# Standalone PixelSNAIL run on mel-spectrogram images, final epoch.
+PIXELSNAIL_CKPT_ID="1udK8hNemircljzRFKd3qjzq_8Ycdy8XD"   # checkpoint_41_model2.pt, 16 MB
+PIXELSNAIL_CKPT_NAME="results/pixelsnail/64-40-epochs/checkpoint_41_model2.pt"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -252,6 +284,95 @@ install_finetune_ckpts() {
   done
 }
 
+install_dcase_dataset() {
+  local dest="$DCASE_DIR/DCASEFoleySoundSynthesisDevSet"
+  if [ -d "$dest" ] && [ -n "$(ls -A "$dest" 2>/dev/null)" ]; then
+    log "DCASE Foley dev set already present, skipping"
+    return
+  fi
+  need_cmd curl "Install curl."
+  need_cmd python3 "Install python3."
+  log "resolving DCASE dev set files from Zenodo record $DCASE_ZENODO_RECORD"
+
+  local urls
+  urls="$(curl -fsL --retry 3 --retry-delay 5 \
+      "https://zenodo.org/api/records/${DCASE_ZENODO_RECORD}" \
+    | python3 -c 'import json,sys
+rec = json.load(sys.stdin)
+for f in rec.get("files", []):
+    print(f["links"]["self"], f["key"], sep="\t")' )" || {
+    warn "could not reach the Zenodo API."
+    warn "Download the development set manually from https://zenodo.org/record/${DCASE_ZENODO_RECORD}"
+    warn "and unpack it to $dest"
+    return 1
+  }
+  [ -n "$urls" ] || die "Zenodo record ${DCASE_ZENODO_RECORD} listed no files"
+
+  mkdir -p "$DCASE_DIR/_zenodo"
+  local url name
+  while IFS=$'\t' read -r url name; do
+    [ -n "$name" ] || continue
+    if [ -s "$DCASE_DIR/_zenodo/$name" ]; then
+      log "$name already downloaded, skipping"
+    else
+      log "downloading $name"
+      curl -fL --retry 3 --retry-delay 5 -C - "$url" -o "$DCASE_DIR/_zenodo/$name"
+    fi
+  done <<< "$urls"
+
+  log "unpacking into $DCASE_DIR/"
+  local archive
+  for archive in "$DCASE_DIR/_zenodo"/*; do
+    case "$archive" in
+      *.zip) need_cmd unzip "Install unzip."; unzip -q -o "$archive" -d "$DCASE_DIR" ;;
+      *.tar|*.tar.gz|*.tgz) tar -xf "$archive" -C "$DCASE_DIR" ;;
+      *) cp -n "$archive" "$DCASE_DIR/" ;;
+    esac
+  done
+
+  # datasets.py walks ./DCASEFoleySoundSynthesisDevSet; accept either that name
+  # or the "(1)"-suffixed one the archive may unpack to.
+  if [ ! -d "$dest" ] && [ -d "$DCASE_DIR/DCASEFoleySoundSynthesisDevSet(1)" ]; then
+    ln -s "DCASEFoleySoundSynthesisDevSet(1)" "$dest"
+  fi
+  log "DCASE dev set installed under $DCASE_DIR/ (archives kept in _zenodo/)"
+}
+
+install_dcase_checkpoints() {
+  mkdir -p "$DCASE_DIR/checkpoint/hifigan"
+  local f
+  for f in g_00935000 hifigan_config.json; do
+    if [ -s "$DCASE_DIR/checkpoint/hifigan/$f" ]; then
+      log "$f already present, skipping"
+    else
+      log "downloading HiFi-GAN $f from the upstream baseline repo"
+      need_cmd curl "Install curl."
+      curl -fL --retry 3 --retry-delay 5 "$DCASE_HIFIGAN_BASE/$f" \
+        -o "$DCASE_DIR/checkpoint/hifigan/$f"
+    fi
+  done
+
+  local entry name id
+  for entry in "${DCASE_CKPTS[@]}"; do
+    name="${entry%:*}"; id="${entry##*:}"
+    if [ -s "$DCASE_DIR/$name" ]; then
+      log "$(basename "$name") already present, skipping"
+      continue
+    fi
+    gdrive_download "$id" "$DCASE_DIR/$name"
+  done
+  log "DCASE checkpoints installed"
+}
+
+install_pixelsnail_ckpt() {
+  if [ -s "$PIXELSNAIL_DIR/$PIXELSNAIL_CKPT_NAME" ]; then
+    log "PixelSNAIL checkpoint already present, skipping"
+    return
+  fi
+  log "downloading standalone PixelSNAIL checkpoint, epoch 41 (~17 MB)"
+  gdrive_download "$PIXELSNAIL_CKPT_ID" "$PIXELSNAIL_DIR/$PIXELSNAIL_CKPT_NAME"
+}
+
 verify() {
   local ok=1
   log "verifying repository layout"
@@ -307,7 +428,7 @@ verify() {
 }
 
 usage() {
-  sed -n '10,24p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '10,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -319,23 +440,28 @@ usage() {
 
 do_checkpoints=0 do_checkpoints_alt=0 do_dataset=0 do_trained=0 do_baseline=0
 do_clap_tiny=0 do_clap_ae=0 do_finetune=0 do_verify=0
+do_dcase_data=0 do_dcase_ckpt=0 do_ps_ckpt=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --checkpoints)      do_checkpoints=1 ;;
-    --checkpoints-alt)  do_checkpoints_alt=1 ;;
-    --dataset)          do_dataset=1 ;;
-    --trained-ckpt)     do_trained=1 ;;
-    --baseline-ckpt)    do_baseline=1 ;;
-    --clap-htsat-tiny)  do_clap_tiny=1 ;;
-    --clap-autoencoder) do_clap_ae=1 ;;
-    --finetune-ckpts)   do_finetune=1 ;;
-    --minimal)          do_checkpoints=1; do_trained=1 ;;
-    --all)              do_checkpoints=1; do_dataset=1; do_trained=1
-                        do_baseline=1; do_clap_tiny=1; do_clap_ae=1; do_finetune=1 ;;
-    --verify)           do_verify=1 ;;
-    -h|--help)          usage 0 ;;
-    *)                  die "unknown option '$1' (try --help)" ;;
+    --checkpoints)       do_checkpoints=1 ;;
+    --checkpoints-alt)   do_checkpoints_alt=1 ;;
+    --dataset)           do_dataset=1 ;;
+    --trained-ckpt)      do_trained=1 ;;
+    --baseline-ckpt)     do_baseline=1 ;;
+    --clap-htsat-tiny)   do_clap_tiny=1 ;;
+    --clap-autoencoder)  do_clap_ae=1 ;;
+    --finetune-ckpts)    do_finetune=1 ;;
+    --dcase-dataset)     do_dcase_data=1 ;;
+    --dcase-checkpoints) do_dcase_ckpt=1 ;;
+    --pixelsnail-ckpt)   do_ps_ckpt=1 ;;
+    --experiments)       do_dcase_data=1; do_dcase_ckpt=1; do_ps_ckpt=1 ;;
+    --minimal)           do_checkpoints=1; do_trained=1 ;;
+    --all)               do_checkpoints=1; do_dataset=1; do_trained=1
+                         do_baseline=1; do_clap_tiny=1; do_clap_ae=1; do_finetune=1 ;;
+    --verify)            do_verify=1 ;;
+    -h|--help)           usage 0 ;;
+    *)                   die "unknown option '$1' (try --help)" ;;
   esac
   shift
 done
@@ -348,6 +474,9 @@ done
 [ "$do_clap_tiny"       = 1 ] && install_clap_htsat_tiny
 [ "$do_clap_ae"         = 1 ] && install_clap_autoencoder
 [ "$do_finetune"        = 1 ] && install_finetune_ckpts
+[ "$do_dcase_data"      = 1 ] && install_dcase_dataset
+[ "$do_dcase_ckpt"      = 1 ] && install_dcase_checkpoints
+[ "$do_ps_ckpt"         = 1 ] && install_pixelsnail_ckpt
 [ "$do_verify"          = 1 ] && verify
 
 log "done"

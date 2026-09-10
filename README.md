@@ -60,6 +60,7 @@ audioldm_train/            # model, training, inference and evaluation code
 ├── infer.py               # inference entry point
 └── eval.py                # FAD / KL / IS evaluation
 data/dataset/metadata/     # AudioCaps caption + label metadata (tracked in git)
+experiments/               # side explorations: DCASE Task 7 cVAE/VQ-VAE, PixelSNAIL
 tests/                     # caption lists and a dataset/checkpoint validator
 scripts/setup_data.sh      # downloads the datasets and weights (see below)
 docs/                      # upstream README, model architecture dumps, W&B report
@@ -220,6 +221,27 @@ Relative to upstream `haoheliu/AudioLDM-training-finetuning`:
 The upstream README, which documents the original codebase and its configuration
 format in more detail, is kept at [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md).
 
+## Other approaches we tried
+
+Before settling on the refined Audio-LDM above, we explored three other routes.
+They live under [experiments/](experiments/), independent of `audioldm_train/`,
+with their own setup instructions in [experiments/README.md](experiments/README.md):
+
+- **[experiments/dcase2023_task7/](experiments/dcase2023_task7/)** — our fork of
+  the DCASE 2023 Task 7 Foley sound synthesis baseline (VQ-VAE + PixelSNAIL +
+  HiFi-GAN), to which we added a conditional VAE, a class-conditional latent
+  diffusion model with classifier-free guidance, and a transformer variant of
+  the autoregressive prior.
+- **[experiments/pixelsnail/](experiments/pixelsnail/)** — PixelCNN / PixelCNN++ /
+  PixelSNAIL trained directly on mel spectrograms rendered as images.
+- **[experiments/swin_embeddings/](experiments/swin_embeddings/)** — the
+  spectrogram-image and annotation preprocessing for a Swin Transformer scene
+  embedding we did not finish.
+
+```shell
+./scripts/setup_data.sh --experiments   # data + weights for the above, ~4.2 GB
+```
+
 ## Project archive
 
 The original working directory for this project, including training logs, W&B
@@ -238,6 +260,12 @@ This work builds on:
   (MIT, see [audioldm_train/modules/MSCLAP/LICENSE](audioldm_train/modules/MSCLAP/LICENSE))
 - [LAION CLAP](https://github.com/LAION-AI/CLAP), [HiFi-GAN](https://github.com/jik876/hifi-gan),
   and [stable-diffusion](https://github.com/CompVis/stable-diffusion)
+
+The side experiments additionally build on the
+[DCASE 2023 Task 7 baseline](https://github.com/DCASE2023-Task7-Foley-Sound-Synthesis/dcase2023_task7_baseline)
+and [liuxubo717/sound_generation](https://github.com/liuxubo717/sound_generation);
+see [experiments/README.md](experiments/README.md) for the full attribution and
+for the research-only restriction on part of the DCASE dataset.
 
 The pretrained AudioLDM checkpoints fetched by `--finetune-ckpts` are released
 under CC-BY-NC 4.0 and are not licensed for commercial use.
