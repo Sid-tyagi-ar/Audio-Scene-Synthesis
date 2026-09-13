@@ -2,12 +2,12 @@
 # Email: haoheliu@gmail.com
 # Date: 11 Feb 2023
 
+import os
 import sys
 
-# sys.path.append('/mnt/g/My Drive/CS671-DL/AudioLDM')
-sys.path.append("/mnt/g/My Drive/CS671-DL/AudioLDM")
-sys.path.append("/content/drive/MyDrive/CS671-DL/AudioLDM/")
-sys.path.append('G:\.shortcut-targets-by-id\1Qni5M2-nzsVK1boZuPVowiq97E1qQ4mW\CS671-DL\AudioLDM\audioldm_train\train\latent_diffusion.py')
+# Make `audioldm_train` importable when this file is run as a script rather than
+# through the installed package (e.g. `python3 audioldm_train/train/latent_diffusion.py`).
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append("src")
 import shutil
 import os

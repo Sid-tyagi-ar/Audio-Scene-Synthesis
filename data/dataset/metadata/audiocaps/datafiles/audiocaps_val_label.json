@@ -1,0 +1,10 @@
+{
+ "data": [
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part38/YvfY_TJq7n_U.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YvfY_TJq7n_U.npy",
+   "labels": "/m/09ddx,/m/09x0r,/m/0jbk",
+   "caption": "Rustling occurs, ducks quack and water splashes, followed by an adult female and adult male speaking and duck calls being blown"
+  }
+ ]
+}

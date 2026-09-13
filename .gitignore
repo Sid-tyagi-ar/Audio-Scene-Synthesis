@@ -1,0 +1,48 @@
+__pycache__/
+*.py[cod]
+*.so
+.DS_Store
+.ipynb_checkpoints/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Large assets fetched by scripts/setup_data.sh -- never commit these
+data/checkpoints/*
+!data/checkpoints/.gitkeep
+data/dataset/audioset/
+audioldm_train/modules/MSCLAP/msclap/models/encoder_model.pth
+*.ckpt
+*.pt
+*.pth
+*.tar
+*.tar.gz
+*.zip
+*.wav
+
+# Side experiments: downloaded data, weights and generated output
+experiments/dcase2023_task7/_zenodo/
+experiments/dcase2023_task7/DCASEFoleySoundSynthesisDevSet*
+experiments/dcase2023_task7/checkpoint/
+experiments/dcase2023_task7/vqvae-code/
+experiments/dcase2023_task7/synthesized/
+experiments/dcase2023_task7/LDM_synthesized/
+experiments/pixelsnail/results/
+experiments/swin_embeddings/Data_Root/
+*.mdb
+*.rar
+
+# Training / inference output
+log/
+lightning_logs/
+wandb/
+runs/
+taming/
+error_*
+output_*
+
+# Editors
+.idea/
+.vscode/

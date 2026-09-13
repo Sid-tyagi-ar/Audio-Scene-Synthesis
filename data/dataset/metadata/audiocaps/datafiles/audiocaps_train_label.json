@@ -1,0 +1,10 @@
+{
+ "data": [
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part36/Yr1nicOVtvkQ.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Yr1nicOVtvkQ.npy",
+   "labels": "/m/02jz0l,/m/09x0r",
+   "caption": "A woman talks nearby as water pours"
+  }
+ ]
+}

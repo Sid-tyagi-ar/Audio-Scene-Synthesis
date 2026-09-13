@@ -1,0 +1,52 @@
+{
+    "data": [
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part2/Y1FOLrj7wArU.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y1FOLrj7wArU.npy",
+   "labels": "/m/07yv9,/m/09x0r,/m/0k4j,/t/dd00134",
+   "caption": "Is car is heard softly zooming by"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part2/Y1FRb6_4AKBQ.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y1FRb6_4AKBQ.npy",
+   "labels": "/m/068hy,/m/07r_k2n,/m/0bt9lr,/m/0jbk,/t/dd00136",
+   "caption": "A dog is whimpering"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part2/Y1FTRYZDvjWU.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/Y1FTRYZDvjWU.npy",
+   "labels": "/m/06wzb,/m/07rjwbb",
+   "caption": "A machine is hissing"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part35/YpOMFhtRo_gU.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YpOMFhtRo_gU.npy",
+   "labels": "/m/06mb1,/m/0ngt1",
+   "caption": "Background whirring punctuated with swipe and thunderclap"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part35/YpONs-WiLqjk.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YpONs-WiLqjk.npy",
+   "labels": "/m/01j3sz,/m/09x0r",
+   "caption": "A person laughs with some banging and rattling"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part16/YHW7zqURSqdo.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YHW7zqURSqdo.npy",
+   "labels": "/m/02zsn,/m/09x0r,/m/0lyf6",
+   "caption": "People talk and laugh loudly nearby"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part35/YpOXQNWFHJYU.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YpOXQNWFHJYU.npy",
+   "labels": "/m/06mb1,/m/09x0r",
+   "caption": "A man speaking with light rainfall and a different man speaking in the distance"
+  },
+  {
+   "wav": "zip_audios/unbalanced_train_segments/unbalanced_train_segments_part15/YHC-utKUX3a4.wav",
+   "seg_label": "/mnt/fast/nobackup/scratch4weeks/hl01486/datasets/audiocaps_segment_labels/averaged/YHC-utKUX3a4.npy",
+   "labels": "/m/0284vy3,/m/04zmvq,/m/07jdr,/m/07yv9",
+   "caption": "Humming with a distant train horn blowing"
+  }
+ ]
+}
